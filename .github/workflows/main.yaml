@@ -6,23 +6,18 @@ on:
       - main
 
 jobs:
-  tflint:
-    runs-on: ubuntu-24.04
+  terrascan:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: terraform-linters/setup-tflint@v1
-        name: Setup TFLint
+      - name: Run Terrascan
+        id: terrascan
+        uses: tenable/terrascan-action@v1
         with:
-          tflint_version: latest
-
-      - name: Run TFLint
-        run: tflint --chdir=aws -f json > tflint-output.json
-        continue-on-error: true
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: TFLint
-          path: tflint-output.json
-        if: always()                        # what is this for?
+          iac_type: 'terraform'
+          iac_version: 'v14'
+          policy_type: 'aws'
+          only_warn: true
+          iac_dir: 'aws'
