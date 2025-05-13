@@ -1,4 +1,4 @@
-name: Terraform                               # workflow name
+name: tfsec                               # workflow name
 
 on:
   push:
@@ -6,18 +6,13 @@ on:
       - main
 
 jobs:
-  terrascan:
+  tfsec:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run Terrascan
-        id: terrascan
-        uses: tenable/terrascan-action@v1
+      - name: Terraform security scan
+        uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          iac_type: 'terraform'
-          iac_version: 'v14'
-          policy_type: 'aws'
-          only_warn: true
-          iac_dir: 'aws'
+          soft_fail: true
