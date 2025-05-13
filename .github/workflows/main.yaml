@@ -1,18 +1,16 @@
-name: tfsec                               # workflow name
-
+name: tfsec
 on:
   push:
-    branches:                                 # similar to "only" in GitLab
+    branches:
       - main
-
+  pull_request:
 jobs:
   tfsec:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    name: tfsec
+    runs-on: ubuntu-latest
 
-      - name: Terraform security scan
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@master
+      - name: tfsec
         uses: aquasecurity/tfsec-action@v1.0.0
-        with:
-          soft_fail: true
